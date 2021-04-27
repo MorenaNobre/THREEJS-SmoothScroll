@@ -26,10 +26,18 @@ for(let i = 0; i < 4; i++) {
   })
 
   const img = new THREE.Mesh(geometry, material)
-  img.position.set(1, i * 1.8)
+  img.position.set(Math.random() + .3, i * -1.8)
 
   scene.add(img)
 }
+
+let objs = []
+
+scene.traverse((object) => {
+  if (object.isMesh) {
+    objs.push(object)
+  }
+})
 
 
 // Lights
@@ -73,6 +81,8 @@ camera.position.y = 0
 camera.position.z = 2
 scene.add(camera)
 
+gui.add(camera.position, 'y').min(-5).max(10)
+
 // Controls
 // const controls = new OrbitControls(camera, canvas)
 // controls.enableDamping = true
@@ -86,9 +96,28 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
+//Mouse
+window.addEventListener('wheel', onMouseWheel)
+
+let y = 0
+let position = 0
+
+function onMouseWheel(event) {
+  y = event.deltaY * 0.007
+}
+
+const mouse = new THREE.Vector2()
+
+window.addEventListner('mousemove', (event) => {
+  mouse.x = event.clientX / sizes.width * 2 - 1
+  mouse.y = - (event.clientY / sizes.height) * 2 + 1
+})
+
 /**
  * Animate
  */
+
+const raycaster = new THREE.Raycaster()
 
 const clock = new THREE.Clock()
 
@@ -98,6 +127,26 @@ const tick = () =>
     const elapsedTime = clock.getElapsedTime()
 
     // Update objects
+
+    position += y
+    y *= .4
+
+    camera.position.y = - position
+
+    // Raycaster
+
+    raycaster.setFromCamera(mouse, camera)
+    const intersects = raycaster.intersectObjects(objs)
+
+    for(const intersect of intersects) {
+      intersect.object.position.x = 3
+    }
+
+    for (const object of objs) {
+      if (!intersects.find(intersect => intersect.object === object)) {
+        object.position.x = 1
+      }
+    }
 
     // Update Orbital Controls
     // controls.update()
