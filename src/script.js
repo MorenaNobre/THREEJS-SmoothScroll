@@ -16,7 +16,7 @@ scene.background = new THREE.Color( 0xf9ed63 );
 // Images
 //geometry for each of the Images
 
-const geometry = new THREE.PlaneBufferGeometry(1.2, 2)
+const geometry = new THREE.PlaneBufferGeometry(1, 1.5)
 
 for(let i = 0; i < 5; i++) {
   const material = new THREE.MeshBasicMaterial({
