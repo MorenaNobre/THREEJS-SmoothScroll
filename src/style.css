@@ -8,7 +8,11 @@ html,
 body
 {
     height: 100vh;
-    font-family: 'Poppins';
+    font-family: 'Lobster', cursive;
+    /* color: #f7628f; */
+    /* color: #fa4178; */
+    color: #990d37;
+    /* color: #f9ed63; */
 }
 
 .webgl
@@ -17,4 +21,18 @@ body
     top: 0;
     left: 0;
     outline: none;
+}
+
+.content {
+    position: absolute;
+    display: grid;
+    align-items: center;
+    z-index: 1;
+    height: 100%;
+    width: 100%;
+}
+
+h1 {
+    font-size: 5.5rem;
+    margin-left: 20vw;
 }

@@ -1,32 +1,30 @@
 import './style.css'
 import * as THREE from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import * as dat from 'dat.gui'
+import gsap from 'gsap'
 
 //Texture Loader
 const textureLoader = new THREE.TextureLoader();
-
-// Debug
-const gui = new dat.GUI()
 
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
 
 // Scene
 const scene = new THREE.Scene()
+scene.background = new THREE.Color( 0xf9ed63 );
+// scene.background = new THREE.Color( 0x990d37 );
 
 // Images
 //geometry for each of the Images
 
-const geometry = new THREE.PlaneBufferGeometry(1, 1.3)
+const geometry = new THREE.PlaneBufferGeometry(1.2, 2)
 
-for(let i = 0; i < 4; i++) {
+for(let i = 0; i < 5; i++) {
   const material = new THREE.MeshBasicMaterial({
-    map: textureLoader.load(`/photographs/${i}.jpg`)
+    map: textureLoader.load(`/photographs/${i}.png`), transparent: true
   })
 
   const img = new THREE.Mesh(geometry, material)
-  img.position.set(Math.random() + .3, i * -1.8)
+  img.position.set(Math.random() + .4, i * -2)
 
   scene.add(img)
 }
@@ -81,12 +79,6 @@ camera.position.y = 0
 camera.position.z = 2
 scene.add(camera)
 
-gui.add(camera.position, 'y').min(-5).max(10)
-
-// Controls
-// const controls = new OrbitControls(camera, canvas)
-// controls.enableDamping = true
-
 /**
  * Renderer
  */
@@ -103,12 +95,12 @@ let y = 0
 let position = 0
 
 function onMouseWheel(event) {
-  y = event.deltaY * 0.007
+  y = event.deltaY * 0.002
 }
 
 const mouse = new THREE.Vector2()
 
-window.addEventListner('mousemove', (event) => {
+window.addEventListener('mousemove', (event) => {
   mouse.x = event.clientX / sizes.width * 2 - 1
   mouse.y = - (event.clientY / sizes.height) * 2 + 1
 })
@@ -129,7 +121,7 @@ const tick = () =>
     // Update objects
 
     position += y
-    y *= .4
+    y *= .9
 
     camera.position.y = - position
 
@@ -139,17 +131,18 @@ const tick = () =>
     const intersects = raycaster.intersectObjects(objs)
 
     for(const intersect of intersects) {
-      intersect.object.position.x = 3
+      gsap.to(intersect.object.scale, {x: 1.7, y: 1.7})
+      gsap.to(intersect.object.rotation, {y: -.5})
+      gsap.to(intersect.object.position, {z: -0.9})
     }
 
     for (const object of objs) {
       if (!intersects.find(intersect => intersect.object === object)) {
-        object.position.x = 1
+        gsap.to(object.scale, {x: 1, y: 1})
+        gsap.to(object.rotation, {y: 0})
+        gsap.to(object.position, {z: 0})
       }
     }
-
-    // Update Orbital Controls
-    // controls.update()
 
     // Render
     renderer.render(scene, camera)
