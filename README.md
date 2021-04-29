@@ -32,7 +32,9 @@
 
 <br>
 
-<p>Lorem <a href="" target="_blank"> Lorem </a> Lorem</p>
+<p>Estou explorando um pouco do mundo 3d para desenvolvimento web e para isso estou seguindo uma lista de tutoriais do Gary Simon no canal dele chamado DesignCourse. <a href="https://www.youtube.com/watch?v=2AQLMZwQpDo&list=PL0lNJEnwfVVO4sNO2WDq_h73w-eHQStCB" target="_blank"> Aqui está a lista. </a></p>
+
+<p>A Three JS é uma biblioteca Javascript/API que permite a criação de animações 3D. Combinada com outras bibliotecas é possível desenvolver aplicações bastante dinâmicas.</p>
 
 <br>
 
